@@ -13,14 +13,21 @@ body {
   color: white;
 }
 #minicircle {
-  height: 13px;
-  width: 13px;
+  height: 9px;
+  width: 9px;
   border-radius: 50%;
   background-color: white;
   opacity: 0.6;
   position: absolute;
-  z-index: 999;
+  z-index: 10;
   transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#minicircle p {
+  opacity: 0;
+  color: black;
 }
 #hero {
   width: 100%;
@@ -42,9 +49,10 @@ nav a {
   color: white;
   font-size: 20px;
 }
-nav h4 {
+.other {
   padding: 30px;
 }
+
 .heading {
   margin-top: 50px;
   margin-left: 60px;
@@ -115,7 +123,7 @@ nav h4 {
   height: 100vh;
   width: 100%;
   background-color: black;
-  padding-top: 165px;
+  padding-top: 80px;
   opacity: 0.6;
 }
 
@@ -128,6 +136,7 @@ nav h4 {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  /* overflow: hidden; */
 }
 .element p {
   opacity: 1;
@@ -137,10 +146,17 @@ nav h4 {
 }
 .element img {
   position: absolute;
-  height: 220px;
-  opacity: 0;
-  /* display: none; */
+  height: 270px;
+  /* opacity: 0; */
+  display: none;
   z-index: 20;
+  /* transform: rotate(5deg); */
+}
+
+.element:hover h1 {
+  margin-left: 25px;
+  transition: all 0.5s ease-in-out;
+  color: #292929;
 }
 
 /* about section */
@@ -198,6 +214,7 @@ nav h4 {
 }
 .mention h4 {
   font-weight: bolder;
+  z-index: 110;
 }
 #final1 {
   font-weight: bolder;
@@ -223,4 +240,35 @@ nav h4 {
 .socials a {
   text-decoration: none;
   color: white;
+  z-index: 110;
+}
+
+.mouseenter {
+  background-color: red;
+  width: fit-content;
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: white;
+  padding-bottom: 4px;
+}
+
+.hover-underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

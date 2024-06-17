@@ -8,8 +8,8 @@ const scroll = new LocomotiveScroll({
 function movecircle(xscale = 1, yscale = 1) {
   let circle = document.getElementById("minicircle");
   window.addEventListener("mousemove", function (event) {
-    let x = event.clientX;
-    let y = event.clientY;
+    let x = event.clientX + 10;
+    let y = event.clientY + 10;
     circle.style.transform = `translate(${x}px, ${y}px) scale(${xscale}, ${yscale})`;
   });
 }
@@ -52,12 +52,19 @@ function circlechipta() {
   let yprev = 0;
 
   window.addEventListener("mousemove", function (event) {
-    xscale = gsap.utils.clamp(0.6, 1.4, (event.clientX - xprev) / 100 + 1);
-    yscale = gsap.utils.clamp(0.6, 1.4, (event.clientY - yprev) / 100 + 1);
+    xscale = gsap.utils.clamp(
+      0.3,
+      1.7,
+      Math.abs(event.clientX - xprev) / 100 + 1
+    );
+    yscale = gsap.utils.clamp(
+      0.3,
+      1.7,
+      Math.abs(event.clientY - yprev) / 100 + 1
+    );
 
     xprev = event.clientX;
     yprev = event.clientY;
-    // console.log(xscale, yscale);
 
     movecircle(xscale, yscale);
 
@@ -71,28 +78,73 @@ function circlechipta() {
 circlechipta();
 
 document.querySelectorAll(".element").forEach((elem) => {
+  let circle = document.getElementById("minicircle");
+  let view = document.getElementById("view");
+  var rotate = 0;
+  var differenc = 0;
+
   elem.addEventListener("mousemove", (dets) => {
-    gsap.to(elem.getElementsByTagName("img"), {
-      opacity: 1,
-      ease: Power1,
-      top: dets.clientY - elem.getBoundingClientRect().top - 110,
-      left: dets.clientX - 180,
+    let imgs = Array.from(elem.getElementsByTagName("img"));
+    differenc = dets.clientX - rotate;
+    rotate = dets.clientX;
+
+    imgs.forEach((img) => {
+      gsap.to(img, {
+        display: "block",
+        duration: 0.1,
+        opacity: 1,
+        ease: Power1.easeOut,
+        top: dets.clientY - elem.getBoundingClientRect().top - 110,
+        left: dets.clientX - 180,
+        rotate: gsap.utils.clamp(-20, 20, differenc),
+      });
     });
-  });
-});
-document.querySelectorAll(".element").forEach((elem) => {
-  elem.addEventListener("mousemove", () => {
-    let circle = document.getElementById("minicircle");
     gsap.to(circle, {
       height: 70,
       width: 70,
     });
+    gsap.to(view, {
+      opacity: 1,
+    });
   });
 });
+
 document.querySelectorAll(".element").forEach((elem) => {
-  elem.addEventListener("onmouseleave", () => {
-    gsap.to(elem.getElementsByTagName("img"), {
+  let circle = document.getElementById("minicircle");
+  let view = document.getElementById("view");
+
+  elem.addEventListener("mouseleave", (dets) => {
+    let imgs = Array.from(elem.getElementsByTagName("img"));
+    imgs.forEach((img) => {
+      gsap.to(img, {
+        display: "none",
+        duration: 0.1,
+      });
+    });
+    gsap.to(circle, {
+      height: 9,
+      width: 9,
+    });
+    gsap.to(view, {
       opacity: 0,
     });
+  });
+});
+
+document.querySelectorAll(".element").forEach((elem) => {
+  let time;
+  let xprev = 0;
+
+  elem.addEventListener("mousemove", function (event) {
+    clearTimeout(time);
+    let rotate = gsap.utils.clamp(-5, 5, (event.clientX - xprev) / 100);
+    xprev = event.clientX;
+    console.log(rotate);
+    time = setTimeout(function () {
+      let imgs = elem.getElementsByTagName("img");
+      Array.from(imgs).forEach((img) => {
+        img.style.transform = `rotate(${rotate}deg)`;
+      });
+    }, 100);
   });
 });
