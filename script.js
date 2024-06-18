@@ -81,32 +81,38 @@ document.querySelectorAll(".element").forEach((elem) => {
   let circle = document.getElementById("minicircle");
   let view = document.getElementById("view");
   var rotate = 0;
-  var differenc = 0;
+  var difference = 0;
 
-  elem.addEventListener("mousemove", (dets) => {
-    let imgs = Array.from(elem.getElementsByTagName("img"));
-    differenc = dets.clientX - rotate;
-    rotate = dets.clientX;
+  if (circle && view) {
+    elem.addEventListener("mousemove", (dets) => {
+      let imgs = Array.from(elem.getElementsByTagName("img"));
+      difference = dets.clientX - rotate;
+      rotate = dets.clientX;
 
-    imgs.forEach((img) => {
-      gsap.to(img, {
-        display: "block",
-        duration: 0.1,
+      imgs.forEach((img) => {
+        gsap.to(img, {
+          visibility: "visible",
+          duration: 0.1,
+          opacity: 1,
+          ease: Power1.easeOut,
+          top: dets.clientY - elem.getBoundingClientRect().top - 160,
+          left: dets.clientX - 250,
+          rotate: gsap.utils.clamp(-20, 20, difference),
+        });
+      });
+
+      gsap.to(circle, {
+        height: 70,
+        width: 70,
+      });
+
+      gsap.to(view, {
         opacity: 1,
-        ease: Power1.easeOut,
-        top: dets.clientY - elem.getBoundingClientRect().top - 110,
-        left: dets.clientX - 180,
-        rotate: gsap.utils.clamp(-20, 20, differenc),
       });
     });
-    gsap.to(circle, {
-      height: 70,
-      width: 70,
-    });
-    gsap.to(view, {
-      opacity: 1,
-    });
-  });
+  } else {
+    console.error("Elements with IDs 'minicircle' or 'view' are missing.");
+  }
 });
 
 document.querySelectorAll(".element").forEach((elem) => {
@@ -117,7 +123,7 @@ document.querySelectorAll(".element").forEach((elem) => {
     let imgs = Array.from(elem.getElementsByTagName("img"));
     imgs.forEach((img) => {
       gsap.to(img, {
-        display: "none",
+        visibility: "hidden",
         duration: 0.1,
       });
     });
